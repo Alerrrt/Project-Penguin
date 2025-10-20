@@ -6,7 +6,7 @@ python-multipart==0.0.6
 python-jose[cryptography]==3.3.0
 passlib[bcrypt]==1.7.4
 # Use a version with prebuilt wheels for Python 3.12 on Windows
-aiohttp==3.9.5
+aiohttp==3.13.1
 beautifulsoup4==4.12.2
 requests==2.31.0
 python-dotenv==1.0.0
