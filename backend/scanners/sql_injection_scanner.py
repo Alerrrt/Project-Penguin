@@ -23,8 +23,8 @@ class SqlInjectionScanner(BaseScanner):
         "name": "SQL Injection Scanner",
         "description": "Detects SQL Injection vulnerabilities by sending common attack payloads.",
         "owasp_category": OwaspCategory.A03_INJECTION,
-        "author": "Project Nightingale Team",
-        "version": "1.0"
+        "author": "Project Penguin Team",
+        "version": "1.1"
     }
 
     SQLI_PAYLOADS = [
@@ -64,6 +64,10 @@ class SqlInjectionScanner(BaseScanner):
         time_based_timeout = float(options.get('time_based_timeout', max(self.TIME_BASED_TIMEOUT_DEFAULT, time_delay + 5)))
         use_seeds = bool(options.get('use_seeds', True))
         max_urls = int(options.get('max_urls', 6))
+        
+        # Concurrency settings
+        concurrency_limit = int(options.get('concurrency', 10))
+        semaphore = asyncio.Semaphore(concurrency_limit)
 
         # Build URLs to test
         urls_to_test: List[str] = [target]
@@ -72,9 +76,46 @@ class SqlInjectionScanner(BaseScanner):
                 urls_to_test.extend(await seed_urls(target, max_urls=max_urls))
             except Exception:
                 pass
+        
+        # Deduplicate
+        urls_to_test = list(set(urls_to_test))
 
         try:
             async with get_http_client(verify=False, follow_redirects=True, timeout=time_based_timeout) as client:
+                tasks = []
+
+                # Helper for concurrent requests
+                async def check_payload(url: str, param: str, payload: str, method: str, check_type: str, data: Dict = None):
+                    async with semaphore:
+                        try:
+                            start_time = asyncio.get_event_loop().time()
+                            if method == 'POST':
+                                resp = await client.post(url, data=data, timeout=time_based_timeout if check_type == 'time-based' else normal_timeout)
+                            else:
+                                params = data if data else {}
+                                resp = await client.get(url, params=params, timeout=time_based_timeout if check_type == 'time-based' else normal_timeout)
+                            
+                            end_time = asyncio.get_event_loop().time()
+                            body = resp.text
+
+                            if check_type == 'error-based':
+                                if any(re.search(pat, body, re.IGNORECASE) for pat in error_patterns):
+                                    return self._create_finding(url, param, payload, "error-based", body[:500])
+                            
+                            elif check_type == 'time-based':
+                                if (end_time - start_time) >= (time_delay - 0.5):
+                                    # Double check to avoid false positives from slow networks? 
+                                    # For now, we trust the delay relative to expected.
+                                    return self._create_finding(url, param, payload, "time-based", f"Response time: {end_time - start_time:.2f}s")
+                            
+                        except httpx.TimeoutException:
+                            if check_type == 'time-based':
+                                return self._create_finding(url, param, payload, "time-based-timeout", f"Request timed out after {time_based_timeout}s")
+                        except Exception as e:
+                            # Debug log only
+                            pass
+                        return None
+
                 for page_url in urls_to_test:
                     try:
                         resp = await client.get(page_url)
@@ -82,72 +123,66 @@ class SqlInjectionScanner(BaseScanner):
                     except Exception:
                         continue
 
-                    # Scan forms on the page
+                    # 1. Scan forms on the page
                     forms = re.findall(r'<form[^>]*>.*?</form>', content, re.DOTALL | re.IGNORECASE)
                     for form_html in forms:
                         action_match = re.search(r'action=["\']([^"\']*)["\']', form_html, re.IGNORECASE)
                         method_match = re.search(r'method=["\']([^"\']*)["\']', form_html, re.IGNORECASE)
                         action = action_match.group(1) if action_match else ''
-                        method = (method_match.group(1).upper() if method_match else 'GET')
-                        form_url = str(httpx.URL(page_url).join(action))
+                        method_str = (method_match.group(1).upper() if method_match else 'GET')
+                        
+                        if not action.startswith(('http://', 'https://')):
+                            form_url = str(httpx.URL(page_url).join(action))
+                        else:
+                            form_url = action
+
                         inputs = re.findall(r'<input[^>]*name=["\']([^"\']*)["\'][^>]*>', form_html, re.IGNORECASE)
                         if not inputs:
                             continue
 
                         for param_name in inputs:
-                            # Error-based checks
+                            # Prepare base data
+                            base_data = {input_name: 'test' for input_name in inputs}
+                            
+                            # Error-based tasks
                             for payload in self.SQLI_PAYLOADS:
-                                data = {input_name: 'test' for input_name in inputs}
+                                data = base_data.copy()
                                 data[param_name] = payload
-                                try:
-                                    if method == 'POST':
-                                        test_response = await client.post(form_url, data=data, timeout=normal_timeout)
-                                    else:
-                                        test_response = await client.get(form_url, params=data, timeout=normal_timeout)
-                                    body = test_response.text
-                                    if any(re.search(pat, body, re.IGNORECASE) for pat in error_patterns):
-                                        findings.append(self._create_finding(form_url, param_name, payload, "error-based", body[:500]))
-                                        break
-                                except httpx.RequestError as e:
-                                    logger.warning(f"Request failed for error-based SQLi check: {e}")
+                                tasks.append(check_payload(form_url, param_name, payload, method_str, 'error-based', data=data))
 
-                            # Time-based checks
+                            # Time-based tasks
                             for tpl in self.TIME_BASED_PAYLOAD_TEMPLATES:
                                 payload = tpl.format(d=time_delay)
-                                data = {input_name: 'test' for input_name in inputs}
+                                data = base_data.copy()
                                 data[param_name] = payload
-                                try:
-                                    start_time = asyncio.get_event_loop().time()
-                                    if method == 'POST':
-                                        await client.post(form_url, data=data, timeout=time_based_timeout)
-                                    else:
-                                        await client.get(form_url, params=data, timeout=time_based_timeout)
-                                    end_time = asyncio.get_event_loop().time()
-                                    if (end_time - start_time) >= (time_delay - 0.5):
-                                        findings.append(self._create_finding(form_url, param_name, payload, "time-based", f"Response time: {end_time - start_time:.2f}s"))
-                                        break
-                                except httpx.TimeoutException:
-                                    findings.append(self._create_finding(form_url, param_name, payload, "time-based-timeout", f"Request timed out after {time_based_timeout}s"))
-                                    break
-                                except httpx.RequestError as e:
-                                    logger.warning(f"Request failed for time-based SQLi check: {e}")
+                                tasks.append(check_payload(form_url, param_name, payload, method_str, 'time-based', data=data))
 
-                    # Also try common GET parameters directly on the URL
+                    # 2. URL Parameters (GET)
                     parsed = urlparse(page_url)
                     base_qs = parse_qs(parsed.query)
                     common_params = options.get('parameters', ['id', 'q', 'search', 'user', 'page'])
-                    for param in common_params:
-                        for payload in self.SQLI_PAYLOADS:
+                    
+                    # If URL already has params, test them too
+                    existing_params = list(base_qs.keys())
+                    params_to_test = set(common_params + existing_params)
+
+                    for param in params_to_test:
+                         for payload in self.SQLI_PAYLOADS:
                             qs = base_qs.copy()
                             qs[param] = [payload]
+                            # Reconstruct URL with payload
                             test_url = urlunparse(parsed._replace(query=urlencode(qs, doseq=True)))
-                            try:
-                                r = await client.get(test_url, timeout=normal_timeout)
-                                if any(re.search(pat, r.text, re.IGNORECASE) for pat in error_patterns):
-                                    findings.append(self._create_finding(test_url, param, payload, "error-based", r.text[:500]))
-                                    break
-                            except Exception:
-                                pass
+                            # For GET params in URL, we request the URL directly, no separate data dict needed usually, 
+                            # but our helper takes url + params. Let's just pass the full test_url and empty params.
+                            tasks.append(check_payload(test_url, param, payload, 'GET', 'error-based'))
+
+                if tasks:
+                    logger.info(f"Executing {len(tasks)} SQLi tests concurrently...")
+                    # Run in chunks or all at once? gather allows all, but semaphore limits active ones.
+                    results = await asyncio.gather(*tasks)
+                    for res in results:
+                        if res:
+                            findings.append(res)
 
         except httpx.RequestError as e:
             logger.error(f"Failed to fetch target URL {target}: {e}")

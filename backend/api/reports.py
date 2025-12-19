@@ -1,14 +1,12 @@
 ﻿from fastapi import APIRouter, HTTPException, Depends, Request
 from fastapi.responses import FileResponse, StreamingResponse
-from typing import Dict, Any, List, Tuple
+from typing import Dict, Any, List
 import os
 import io
-import math
 from pathlib import Path
 from datetime import datetime
 from backend.scanner_engine import ScannerEngine
 from backend.utils.snapshot_store import load_snapshot
-from fastapi import HTTPException
 import httpx
 from backend.utils.newsletter_store import store_email
 
