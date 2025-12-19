@@ -398,7 +398,7 @@ class ScannerRegistry:
                 'vulnerability_types': details.get('vulnerability_types', []),
                 'scan_type': details.get('scan_type', 'General'),
                 'intensity': details.get('intensity', 'Medium'),
-                'author': md.get('author', 'Project Nightingale Team'),
+                'author': md.get('author', 'Project Penguin Team'),
                 'version': md.get('version', '1.0.0'),
             }
             metadata[key] = normalized

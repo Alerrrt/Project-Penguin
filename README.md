@@ -1,6 +1,6 @@
 # Project Penguin — Advanced Security Scanner
 
-A modern web security scanning platform with robust concurrency, safe HTTP policies, and real-time updates. Project Nightingale V2 provides comprehensive security scanning capabilities with a focus on performance, reliability, and user experience.
+A modern web security scanning platform with robust concurrency, safe HTTP policies, and real-time updates. Project Penguin contains comprehensive security scanning capabilities with a focus on performance, reliability, and user experience.
 
 ## 🔍 Key Features
 

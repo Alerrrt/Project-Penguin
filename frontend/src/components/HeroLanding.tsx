@@ -1,5 +1,5 @@
 import React from 'react';
-import { Shield, Globe, Zap, BarChart3, Target, ArrowRight, Play, Settings, Clock, FileText } from 'lucide-react';
+import { Shield, Zap, BarChart3, ArrowRight, Play, Settings, Clock } from 'lucide-react';
 
 interface HeroLandingProps {
   onStartScan: () => void;
@@ -26,7 +26,7 @@ const HeroLanding: React.FC<HeroLandingProps> = ({ onStartScan, onShowHistory, o
             </div>
           </div>
           <h1 className="text-5xl md:text-7xl font-bold text-text mb-6">
-            Nightingale
+            Project Penguin
           </h1>
           <p className="text-xl md:text-2xl text-textSecondary max-w-3xl mx-auto leading-relaxed">
             Advanced Security Scanning & Vulnerability Assessment Platform
@@ -89,7 +89,7 @@ const HeroLanding: React.FC<HeroLandingProps> = ({ onStartScan, onShowHistory, o
             <Settings className="w-5 h-5" />
             <span>Customize Scanners</span>
           </button>
-          
+
           <button
             onClick={onShowHistory}
             className="flex items-center justify-center space-x-2 bg-surface hover:bg-surface/80 text-text font-semibold py-4 px-8 rounded-xl border border-border hover:border-primary/50 transition-all duration-300"
@@ -113,7 +113,7 @@ const HeroLanding: React.FC<HeroLandingProps> = ({ onStartScan, onShowHistory, o
                 <li>Comprehensive Reports</li>
               </ul>
             </div>
-            
+
             <div>
               <h4 className="text-lg font-bold text-text mb-4">Scanners</h4>
               <ul className="space-y-2 text-textSecondary">
@@ -123,7 +123,7 @@ const HeroLanding: React.FC<HeroLandingProps> = ({ onStartScan, onShowHistory, o
                 <li>API Security</li>
               </ul>
             </div>
-            
+
             <div>
               <h4 className="text-lg font-bold text-text mb-4">Reports</h4>
               <ul className="space-y-2 text-textSecondary">
@@ -133,7 +133,7 @@ const HeroLanding: React.FC<HeroLandingProps> = ({ onStartScan, onShowHistory, o
                 <li>Remediation Guide</li>
               </ul>
             </div>
-            
+
             <div>
               <h4 className="text-lg font-bold text-text mb-4">Support</h4>
               <ul className="space-y-2 text-textSecondary">
@@ -144,9 +144,9 @@ const HeroLanding: React.FC<HeroLandingProps> = ({ onStartScan, onShowHistory, o
               </ul>
             </div>
           </div>
-          
+
           <div className="mt-8 pt-8 border-t border-border/50 text-center text-textSecondary">
-            <p>&copy; 2024 Nightingale Security Platform. Advanced vulnerability assessment for modern applications.</p>
+            <p>&copy; 2024 Project Penguin Security Platform. Advanced vulnerability assessment for modern applications.</p>
           </div>
         </div>
       </div>

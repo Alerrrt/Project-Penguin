@@ -72,7 +72,7 @@ async def generate_pdf_report(
             return StreamingResponse(
                 io.BytesIO(pdf_buffer.getvalue()),
                 media_type="application/pdf",
-                headers={"Content-Disposition": f"attachment; filename=nightingale_security_report_{scan_id}.pdf"}
+                headers={"Content-Disposition": f"attachment; filename=project_penguin_security_report_{scan_id}.pdf"}
             )
         else:
             # Fallback to static template
@@ -83,7 +83,7 @@ async def generate_pdf_report(
             return FileResponse(
                 path=str(pdf_path),
                 media_type="application/pdf",
-                filename="nightingale_security_report.pdf"
+                filename="project_penguin_security_report.pdf"
             )
         
     except Exception as e:
@@ -585,7 +585,7 @@ def generate_dynamic_pdf(scan_data: Dict[str, Any], target_url: str) -> io.Bytes
     )
     
     # Title
-    story.append(Paragraph("Nightingale Security Scan Report", title_style))
+    story.append(Paragraph("Project Penguin Security Scan Report", title_style))
     story.append(Spacer(1, 20))
     
     # Scan Information

@@ -2,8 +2,6 @@ import React, { useRef, useState } from 'react';
 import { GroupedVulnerability, VulnerabilityData } from './VulnerabilityList';
 import { ScanStats } from './StatsCards';
 import { X, Download } from 'lucide-react';
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
 
 interface ScanReportProps {
   scanStats: ScanStats;
@@ -28,7 +26,7 @@ const ScanReport: React.FC<ScanReportProps> = ({ scanStats, groupedVulnerabiliti
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({ email: '' });
   const [formError, setFormError] = useState('');
-  const [formSubmitted, setFormSubmitted] = useState(false);
+
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleDownloadPdf = () => {
@@ -56,12 +54,12 @@ const ScanReport: React.FC<ScanReportProps> = ({ scanStats, groupedVulnerabiliti
         body: JSON.stringify({ email: formData.email, url: scanStats.target })
       });
       if (!res.ok) throw new Error('Failed to save user info');
-      
+
       // Call backend to generate and download PDF
       const pdfRes = await fetch('/api/reports/scans/generate_pdf', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           url: scanStats.target,
           scan_id: scanId || 'unknown' // Include scan ID for dynamic PDF generation
         })
@@ -71,12 +69,12 @@ const ScanReport: React.FC<ScanReportProps> = ({ scanStats, groupedVulnerabiliti
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'nightingale_security_report.pdf';
+      a.download = 'project_penguin_security_report.pdf';
       document.body.appendChild(a);
       a.click();
       a.remove();
       window.URL.revokeObjectURL(url);
-      setFormSubmitted(true);
+
       setShowForm(false);
     } catch (err) {
       setFormError('Failed to submit or download PDF. Please try again.');
@@ -101,9 +99,9 @@ const ScanReport: React.FC<ScanReportProps> = ({ scanStats, groupedVulnerabiliti
       `"${vuln.instances.map(i => i.location).join(', ')}"`
     ]);
 
-    const csvContent = "data:text/csv;charset=utf-8," 
+    const csvContent = "data:text/csv;charset=utf-8,"
       + [headers.join(","), ...rows.map(e => e.join(","))].join("\n");
-    
+
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement("a");
     link.setAttribute("href", encodedUri);
@@ -150,7 +148,7 @@ const ScanReport: React.FC<ScanReportProps> = ({ scanStats, groupedVulnerabiliti
             <X size={24} />
           </button>
         </header>
-        
+
         <main ref={reportContentRef} className="p-8 overflow-y-auto">
           {/* Scan Summary */}
           <section className="mb-8 p-6 bg-surface rounded-lg">
@@ -208,7 +206,7 @@ const ScanReport: React.FC<ScanReportProps> = ({ scanStats, groupedVulnerabiliti
                     <span className="text-sm text-textSecondary">Found {vuln.count} time(s)</span>
                   </div>
                   <p className="text-sm mb-4">{vuln.description}</p>
-                  
+
                   <div className="bg-background p-4 rounded-md">
                     <h4 className="font-semibold mb-2">Affected Locations:</h4>
                     <ul className="list-disc list-inside text-sm font-mono max-h-32 overflow-y-auto">
@@ -223,22 +221,22 @@ const ScanReport: React.FC<ScanReportProps> = ({ scanStats, groupedVulnerabiliti
             </div>
           </section>
         </main>
-        
+
         <footer className="bg-surface p-4 mt-auto rounded-b-lg flex justify-end space-x-4">
-            <button 
-              onClick={handleDownloadCsv}
-              className="bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-md flex items-center"
-            >
-                <Download size={18} className="mr-2" />
-                Download CSV
-            </button>
-            <button 
-              onClick={handleDownloadPdf}
-              className="bg-primary hover:bg-opacity-80 text-background font-bold py-2 px-4 rounded-md flex items-center"
-            >
-                <Download size={18} className="mr-2" />
-                Download PDF
-            </button>
+          <button
+            onClick={handleDownloadCsv}
+            className="bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-md flex items-center"
+          >
+            <Download size={18} className="mr-2" />
+            Download CSV
+          </button>
+          <button
+            onClick={handleDownloadPdf}
+            className="bg-primary hover:bg-opacity-80 text-background font-bold py-2 px-4 rounded-md flex items-center"
+          >
+            <Download size={18} className="mr-2" />
+            Download PDF
+          </button>
         </footer>
         {/* Modal Form for User Info */}
         {showForm && (
