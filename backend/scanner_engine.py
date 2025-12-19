@@ -149,7 +149,7 @@ class ScannerEngine:
         self.scanner_registry = None
         self._scan_results: Dict[str, Dict] = {}
         self._active_scans: Dict[str, asyncio.Task] = {}
-        self._semaphore = asyncio.Semaphore(20)  # Increased for better concurrency
+        self._semaphore = asyncio.Semaphore(50)  # Increased to 50 for improved throughput
         
         # Enhanced components
         self._concurrency_manager = get_scanner_concurrency_manager()
