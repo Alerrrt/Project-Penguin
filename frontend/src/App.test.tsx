@@ -1,4 +1,3 @@
-import React from 'react';
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
@@ -7,13 +6,13 @@ import * as scanApi from './api/scanApi';
 
 // Helper to flush all pending promises
 function flushPromises() {
-  return new Promise(setImmediate);
+  return new Promise(resolve => setTimeout(resolve, 0));
 }
 
 describe('App scan timeout behavior', () => {
   it('shows timeout message if scan takes longer than 120 seconds', async () => {
     // Mock startScan to never resolve
-    vi.spyOn(scanApi, 'startScan').mockImplementation(() => new Promise(() => {}));
+    vi.spyOn(scanApi, 'startScan').mockImplementation(() => new Promise(() => { }));
 
     render(<App />);
     const input = screen.getByPlaceholderText(/http/i);

@@ -20,7 +20,7 @@ const Header: React.FC<HeaderProps> = ({ isScanning, denseMode, setDenseMode }) 
                 </button>
             </div>
             <div className="flex items-center gap-2">
-                <span className="px-3 py-1 text-xs rounded-full border border-border/60 bg-surface/60 text-textSecondary">Project Penguin</span>
+                <span className="px-3 py-1 text-xs rounded-full border border-border/60 bg-surface/60 text-textSecondary">Project-Echo</span>
                 <button
                     className={`px-3 py-1 text-xs rounded-md border ${denseMode ? 'bg-primary text-background border-primary' : 'bg-surface text-text border-border'} focus-ring`}
                     title="Toggle dense mode"

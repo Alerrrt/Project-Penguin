@@ -87,13 +87,13 @@ def setup_logging(
 
     # Add file handlers
     handlers = [
-        RotatingFileHandler(
+        logging.handlers.RotatingFileHandler(
             filename=os.path.join(log_dir, f"{app_name}.log"),
             maxBytes=10 * 1024 * 1024,
             backupCount=5,
             encoding='utf-8'
         ),
-        RotatingFileHandler(
+        logging.handlers.RotatingFileHandler(
             filename=os.path.join(log_dir, f"{app_name}_error.log"),
             maxBytes=10 * 1024 * 1024,
             backupCount=5,
@@ -105,7 +105,7 @@ def setup_logging(
         handler.setFormatter(logging.Formatter(
             '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
         ))
-        if handler filenames endswith '_error.log':
+        if hasattr(handler, 'baseFilename') and handler.baseFilename.endswith('_error.log'):
             handler.addFilter(ErrorLogFilter())
         root_logger.addHandler(handler)
 

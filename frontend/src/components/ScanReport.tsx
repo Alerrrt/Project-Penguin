@@ -69,7 +69,7 @@ const ScanReport: React.FC<ScanReportProps> = ({ scanStats, groupedVulnerabiliti
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'project_penguin_security_report.pdf';
+      a.download = 'project_echo_security_report.pdf';
       document.body.appendChild(a);
       a.click();
       a.remove();

@@ -26,7 +26,7 @@ const HeroLanding: React.FC<HeroLandingProps> = ({ onStartScan, onShowHistory, o
             </div>
           </div>
           <h1 className="text-5xl md:text-7xl font-bold text-text mb-6">
-            Project Penguin
+            Project-Echo
           </h1>
           <p className="text-xl md:text-2xl text-textSecondary max-w-3xl mx-auto leading-relaxed">
             Advanced Security Scanning & Vulnerability Assessment Platform
@@ -146,7 +146,7 @@ const HeroLanding: React.FC<HeroLandingProps> = ({ onStartScan, onShowHistory, o
           </div>
 
           <div className="mt-8 pt-8 border-t border-border/50 text-center text-textSecondary">
-            <p>&copy; 2024 Project Penguin Security Platform. Advanced vulnerability assessment for modern applications.</p>
+            <p>&copy; 2024 Project-Echo Security Platform. Advanced vulnerability assessment for modern applications.</p>
           </div>
         </div>
       </div>

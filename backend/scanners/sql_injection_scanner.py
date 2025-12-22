@@ -23,7 +23,7 @@ class SqlInjectionScanner(BaseScanner):
         "name": "SQL Injection Scanner",
         "description": "Detects SQL Injection vulnerabilities by sending common attack payloads.",
         "owasp_category": OwaspCategory.A03_INJECTION,
-        "author": "Project Penguin Team",
+        "author": "Project Echo Team",
         "version": "1.1"
     }
 

@@ -1,0 +1,22 @@
+
+> frontend@0.0.0 build
+> tsc -b && vite build
+
+src/App.test.tsx(1,1): error TS6133: 'React' is declared but its value is never read.
+src/App.test.tsx(10,22): error TS2304: Cannot find name 'setImmediate'.
+src/components/layout/Sidebar.tsx(2,52): error TS6133: 'CloseIcon' is declared but its value is never read.
+src/components/layout/Sidebar.tsx(25,5): error TS6133: 'setSidebarOpen' is declared but its value is never read.
+src/components/SecurityPostureChart.test.tsx(3,1): error TS6133: 'React' is declared but its value is never read.
+src/components/SecurityPostureChart.test.tsx(6,32): error TS2614: Module '"./SecurityPostureChart"' has no exported member 'SecurityPostureData'. Did you mean to use 'import SecurityPostureData from "./SecurityPostureChart"' instead?
+src/components/SecurityPostureChart.test.tsx(16,34): error TS2322: Type '{ reportData: SecurityPostureData; }' is not assignable to type 'IntrinsicAttributes & SecurityPostureChartProps'.
+  Property 'reportData' does not exist on type 'IntrinsicAttributes & SecurityPostureChartProps'.
+src/components/SecurityPostureChart.test.tsx(24,34): error TS2322: Type '{ reportData: SecurityPostureData; }' is not assignable to type 'IntrinsicAttributes & SecurityPostureChartProps'.
+  Property 'reportData' does not exist on type 'IntrinsicAttributes & SecurityPostureChartProps'.
+src/components/SecurityPostureChart.test.tsx(34,34): error TS2322: Type '{ reportData: SecurityPostureData; }' is not assignable to type 'IntrinsicAttributes & SecurityPostureChartProps'.
+  Property 'reportData' does not exist on type 'IntrinsicAttributes & SecurityPostureChartProps'.
+src/components/SecurityPostureChart.tsx(11,7): error TS6133: 'LABELS' is declared but its value is never read.
+src/components/SecurityPostureChart.tsx(55,26): error TS6133: 'entry' is declared but its value is never read.
+src/components/TechnologyVulnerabilities.tsx(2,18): error TS6133: 'AlertTriangle' is declared but its value is never read.
+src/components/TechnologyVulnerabilities.tsx(2,33): error TS6133: 'ShieldCheck' is declared but its value is never read.
+src/components/TechnologyVulnerabilities.tsx(2,46): error TS6133: 'Info' is declared but its value is never read.
+src/context/ScanContext.tsx(137,13): error TS6133: 'connectionTimeout' is declared but its value is never read.

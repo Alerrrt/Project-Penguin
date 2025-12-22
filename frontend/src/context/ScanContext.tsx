@@ -109,7 +109,7 @@ export const ScanProvider: React.FC<ScanProviderProps> = ({ children }) => {
       const envApiBase: string | undefined = (import.meta as any).env?.VITE_API_URL;
       const sameOriginScheme = window.location.protocol === 'https:' ? 'wss' : 'ws';
       const sameOriginUrl = `${sameOriginScheme}://${window.location.host}/api/ws/${scanId}`;
-  
+
       if (isDev) {
         // Dev: always use same-origin so Vite proxy (ws: true) handles WS to backend
         wsUrl = sameOriginUrl;
@@ -129,12 +129,12 @@ export const ScanProvider: React.FC<ScanProviderProps> = ({ children }) => {
       } else {
         wsUrl = sameOriginUrl;
       }
-  
+
       console.log('Attempting to connect to WebSocket URL:', wsUrl);
       ws.current = new WebSocket(wsUrl);
 
       // Add connection timeout
-      const connectionTimeout = setTimeout(() => {
+      setTimeout(() => {
         if (ws.current && ws.current.readyState === WebSocket.CONNECTING) {
           console.error('WebSocket connection timeout - closing connection');
           ws.current.close();
@@ -191,7 +191,7 @@ export const ScanProvider: React.FC<ScanProviderProps> = ({ children }) => {
               if (ws.current && ws.current.readyState === WebSocket.OPEN) {
                 ws.current.send(JSON.stringify({ type: 'ping' }));
               }
-            } catch {}
+            } catch { }
           }, 25000);
         }
       };
@@ -223,20 +223,20 @@ export const ScanProvider: React.FC<ScanProviderProps> = ({ children }) => {
           const progress = data.progress;
           // Use backend-provided ETA if available, otherwise fall back to frontend calculation
           let eta = data.eta_formatted || '...';
-          
+
           // Fallback calculation if backend doesn't provide ETA
           if (!data.eta_formatted && progress > 0) {
             const now = new Date();
             const elapsedMs = now.getTime() - (scanStartTime.current?.getTime() || now.getTime());
-            
+
             if (elapsedMs > 0) {
               const totalEstimatedTimeMs = (elapsedMs / progress) * 100;
               const remainingTimeMs = totalEstimatedTimeMs - elapsedMs;
-              
+
               const remainingSeconds = Math.round(remainingTimeMs / 1000);
               const minutes = Math.floor(remainingSeconds / 60);
               const seconds = remainingSeconds % 60;
-              
+
               if (remainingTimeMs > 0) {
                 eta = `${minutes}m ${seconds}s`;
               } else {
@@ -244,10 +244,10 @@ export const ScanProvider: React.FC<ScanProviderProps> = ({ children }) => {
               }
             }
           }
-          
-          setScanProgress(prev => ({ 
-            ...prev, 
-            progress: typeof data.progress === 'number' ? data.progress : (prev?.progress || 0), 
+
+          setScanProgress(prev => ({
+            ...prev,
+            progress: typeof data.progress === 'number' ? data.progress : (prev?.progress || 0),
             // If backend hasn't sent phase yet, infer it when progress > 0
             phase: (prev?.phase && prev.phase.trim().length > 0)
               ? prev.phase
@@ -295,13 +295,13 @@ export const ScanProvider: React.FC<ScanProviderProps> = ({ children }) => {
           if (data.results) {
             setVulnerabilities(data.results);
           }
-          
+
           // Clean up old data to prevent memory leaks
           setTimeout(() => {
             setActivityLogs([]);
             setModules([]);
           }, 5000); // Keep logs for 5 seconds after completion
-          
+
           if (ws.current) {
             ws.current.close();
           }
@@ -335,7 +335,7 @@ export const ScanProvider: React.FC<ScanProviderProps> = ({ children }) => {
                   totalModules: json.total_modules ?? prev.totalModules,
                   phase: (json.progress > 0 && (!prev?.phase || prev.phase.trim().length === 0)) ? 'Running scanners…' : (prev?.phase || ''),
                 }));
-              } catch {}
+              } catch { }
             }, 2000);
           }
         }
@@ -359,7 +359,7 @@ export const ScanProvider: React.FC<ScanProviderProps> = ({ children }) => {
                 totalModules: json.total_modules ?? prev.totalModules,
                 phase: (json.progress > 0 && (!prev?.phase || prev.phase.trim().length === 0)) ? 'Running scanners…' : (prev?.phase || ''),
               }));
-            } catch {}
+            } catch { }
           }, 2000);
         }
       };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layers, AlertTriangle, ShieldCheck, Info } from 'lucide-react';
+import { Layers } from 'lucide-react';
 import { VulnerabilityData } from './VulnerabilityList'; // Reuse the interface
 
 interface TechnologyVulnerabilitiesProps {

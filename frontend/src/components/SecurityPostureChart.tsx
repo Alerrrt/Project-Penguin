@@ -8,7 +8,6 @@ interface SecurityPostureChartProps {
 }
 
 const COLORS = ['#22c55e', '#facc15', '#ef4444']; // green, yellow, red
-const LABELS = ['Passed', 'Warnings', 'Failed'];
 
 const SecurityPostureChart: React.FC<SecurityPostureChartProps> = ({ vulnerabilities, loading }) => {
   // Calculate counts in real time
@@ -52,7 +51,7 @@ const SecurityPostureChart: React.FC<SecurityPostureChartProps> = ({ vulnerabili
               label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
               isAnimationActive={true}
             >
-              {data.map((entry, idx) => (
+              {data.map((_, idx) => (
                 <Cell key={`cell-${idx}`} fill={COLORS[idx % COLORS.length]} />
               ))}
             </Pie>
