@@ -1,1 +1,10 @@
 node_modules
+__pycache__/
+*.pyc
+venv/
+venv_mac/
+.DS_Store
+dist/
+build/
+*.log
+.env

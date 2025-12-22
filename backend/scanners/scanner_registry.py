@@ -554,6 +554,9 @@ class ScannerRegistry:
                     "technology_vulnerabilities_scanner",
                     "subdomain_dns_enumeration_scanner",
                     "rate_limiting_bruteforce_scanner",
+                    "osint_recon_scanner",
+                    "cloud_discovery_scanner",
+                    "wayback_machine_scanner",
                 }
                 # Keep any alias registered under class-name form if it maps to an allowed module
                 to_keep: Dict[str, Type[BaseScanner]] = {}

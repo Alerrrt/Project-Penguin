@@ -1,14 +1,20 @@
 import asyncio
 import uuid
+import logging
 from typing import List, Optional, Dict, Any
-from backend.utils import get_http_client
 from urllib.parse import urlparse
-import dns.resolver
 from datetime import datetime
+
+import dns.resolver
+import dns.exception
+try:
+    import whois
+except ImportError:
+    whois = None
+
+from backend.utils import get_http_client
 from backend.utils.circuit_breaker import circuit_breaker
 from backend.utils.logging_config import get_context_logger
-import logging
-
 from backend.scanners.base_scanner import BaseScanner
 from ..config_types.models import ScanInput, Finding, Severity, OwaspCategory
 
@@ -16,15 +22,15 @@ logger = logging.getLogger(__name__)
 
 class SubdomainDNSEnumerationScanner(BaseScanner):
     """
-    A scanner module for discovering subdomains via brute-force and DNS lookups.
+    A scanner module for discovering subdomains and gathering DNS/WHOIS intelligence.
     """
 
     metadata = {
-        "name": "Subdomain DNS Enumeration",
-        "description": "Discovers subdomains via brute-force and DNS lookups.",
-        "owasp_category": "A06:2021 - Security Misconfiguration",
-        "author": "Project Nightingale Team",
-        "version": "1.0"
+        "name": "Subdomain & DNS Intelligence",
+        "description": "Discovers subdomains and gathers MX, TXT, NS records and WHOIS information.",
+        "owasp_category": "Informational",
+        "author": "Project Echo Team",
+        "version": "1.1"
     }
 
     @circuit_breaker(failure_threshold=3, recovery_timeout=30.0, name="subdomain_dns_enum_scanner")
@@ -32,120 +38,138 @@ class SubdomainDNSEnumerationScanner(BaseScanner):
         start_time = datetime.now()
         scan_id = f"{self.__class__.__name__}_{start_time.strftime('%Y%m%d_%H%M%S')}"
         try:
-            logger.info("Scan started", extra={
-                "scanner": self.__class__.__name__,
-                "scan_id": scan_id,
-                "target": scan_input.target,
-                "options": scan_input.options
-            })
             results = await self._perform_scan(scan_input.target, scan_input.options or {})
             self._update_metrics(True, start_time)
-            logger.info("Scan completed", extra={
-                "scanner": self.__class__.__name__,
-                "scan_id": scan_id,
-                "target": scan_input.target,
-                "result_count": len(results)
-            })
             return results
         except Exception as e:
             self._update_metrics(False, start_time)
-            logger.error("Scan failed", extra={
-                "scanner": self.__class__.__name__,
-                "scan_id": scan_id,
-                "target": scan_input.target,
-                "error": str(e)
-            }, exc_info=True)
+            logger.error(f"Scan failed: {e}", exc_info=True)
             raise
 
     async def _perform_scan(self, target: str, options: Dict) -> List[Dict]:
-        """
-        Asynchronously uses a wordlist to discover additional subdomains and identifies them.
-
-        Args:
-            target: The target URL for the scan.
-            options: Additional options for the scan.
-
-        Returns:
-            A list of findings for discovered subdomains.
-        """
         findings: List[Dict] = []
-        target_url = target
-        parsed_url = urlparse(target_url)
-        domain = parsed_url.netloc
-        logger.info(f"Starting Subdomain & DNS Enumeration scan for {domain}.")
+        parsed_url = urlparse(target)
+        domain = parsed_url.netloc or parsed_url.path.strip('/')
+        
+        if not domain:
+            return findings
 
-        # Basic subdomain wordlist
-        subdomains_wordlist = [
+        # 1. Gather WHOIS Information
+        await self._gather_whois(domain, findings)
+
+        # 2. Gather DNS Records (MX, TXT, NS)
+        await self._gather_dns_records(domain, findings)
+
+        # 3. Subdomain Enumeration
+        subdomains_wordlist = options.get('wordlist', [
             "www", "mail", "api", "dev", "test", "admin", "blog",
             "shop", "cdn", "beta", "staging", "webmail", "ftp"
-        ]
+        ])
 
-        tasks = []
-        for sub in subdomains_wordlist:
-            full_subdomain = f"{sub}.{domain}"
-            tasks.append(self._check_subdomain(full_subdomain, target_url))
-
-        results = await asyncio.gather(*tasks)
-        for result in results:
+        tasks = [self._check_subdomain(f"{sub}.{domain}", target) for sub in subdomains_wordlist]
+        subdomain_results = await asyncio.gather(*tasks)
+        for result in subdomain_results:
             if result:
                 findings.append(result)
 
-        logger.info(f"Finished Subdomain & DNS Enumeration scan for {domain}.")
         return findings
+
+    async def _gather_whois(self, domain: str, findings: List[Dict]):
+        if not whois:
+            return
+        try:
+            # whois.whois is a blocking call, wrap in thread
+            w = await asyncio.to_thread(whois.whois, domain)
+            if w:
+                findings.append({
+                    "type": "recon",
+                    "severity": Severity.RECON.value,
+                    "title": "WHOIS Records Discovered",
+                    "description": f"Gathered WHOIS information for {domain}.",
+                    "location": "WHOIS Lookup",
+                    "category": "recon",
+                    "evidence": {
+                        "registrar": w.registrar,
+                        "creation_date": str(w.creation_date),
+                        "expiration_date": str(w.expiration_date),
+                        "emails": w.emails,
+                        "org": w.org
+                    },
+                    "remediation": "Review domain registration for sensitive information disclosure.",
+                    "confidence": 100,
+                    "cvss": 0.0
+                })
+        except Exception as e:
+            logger.warning(f"WHOIS lookup failed for {domain}: {e}")
+
+    async def _gather_dns_records(self, domain: str, findings: List[Dict]):
+        record_types = ['MX', 'TXT', 'NS', 'A']
+        for rtype in record_types:
+            try:
+                answers = await asyncio.to_thread(dns.resolver.resolve, domain, rtype)
+                records = [str(rdata) for rdata in answers]
+                if records:
+                    findings.append({
+                        "type": "recon",
+                        "severity": Severity.RECON.value,
+                        "title": f"DNS {rtype} Records Discovered",
+                        "description": f"Found {len(records)} {rtype} records for {domain}.",
+                        "location": "DNS Lookup",
+                        "category": "recon",
+                        "evidence": records,
+                        "remediation": "Review DNS records for misconfigurations or unintended information exposure (e.g., in TXT records).",
+                        "confidence": 100,
+                        "cvss": 0.0
+                    })
+            except (dns.resolver.NoAnswer, dns.resolver.NXDOMAIN, dns.exception.Timeout):
+                pass
+            except Exception as e:
+                logger.warning(f"DNS {rtype} lookup failed for {domain}: {e}")
 
     async def _check_subdomain(self, subdomain: str, base_url: str) -> Optional[Dict]:
         try:
-            # Try to resolve the DNS record for the subdomain
-            answers = dns.resolver.resolve(subdomain, 'A')
-            ip_address = answers[0].address
-            logger.info(f"Found subdomain: {subdomain} -> {ip_address}")
+            answers = await asyncio.to_thread(dns.resolver.resolve, subdomain, 'A')
+            ip_address = str(answers[0])
 
-            # Optionally, make an HTTP request to confirm it's an active web host
             try:
                 async with get_http_client(follow_redirects=True, timeout=5) as client:
-                    # Construct a URL for the subdomain, preserving scheme from original target
-                    subdomain_url = f"{urlparse(base_url).scheme}://{subdomain}"
+                    scheme = urlparse(base_url).scheme or 'http'
+                    subdomain_url = f"{scheme}://{subdomain}"
                     response = await client.get(subdomain_url)
                     if response.status_code < 500:
                         return {
-                            "type": "subdomain_discovered",
-                            "severity": Severity.INFO,
+                            "type": "recon", # Changed to recon
+                            "severity": Severity.RECON.value,
                             "title": "Subdomain Discovered",
                             "description": f"Active subdomain '{subdomain}' resolved to IP '{ip_address}' and returned HTTP status '{response.status_code}'.",
                             "evidence": {
                                 "subdomain": subdomain,
                                 "resolved_ip": ip_address,
-                                "http_status": response.status_code,
-                                "response_snippet": response.text[:100]
+                                "http_status": response.status_code
                             },
-                            "owasp_category": OwaspCategory.SECURITY_MISCONFIGURATION,
-                            "recommendation": "Review this subdomain for unintended exposures or vulnerabilities. Ensure it's properly configured and secured.",
-                            "affected_url": subdomain_url
+                            "category": "recon",
+                            "remediation": "Review this subdomain for intended public availability.",
+                            "affected_url": subdomain_url,
+                            "confidence": 100,
+                            "cvss": 0.0
                         }
-            except Exception as e:
-                logger.warning(f"HTTP request failed for {subdomain}", extra={"error": str(e)})
+            except Exception:
                 return {
-                    "type": "subdomain_discovered_http_unreachable",
-                    "severity": Severity.INFO,
+                    "type": "recon",
+                    "severity": Severity.RECON.value,
                     "title": "Subdomain Discovered (HTTP Unreachable)",
-                    "description": f"Active subdomain '{subdomain}' resolved to IP '{ip_address}' but was unreachable via HTTP. Could indicate internal network resource.",
+                    "description": f"Active subdomain '{subdomain}' resolved to IP '{ip_address}' but was unreachable via HTTP.",
                     "evidence": {
                         "subdomain": subdomain,
-                        "resolved_ip": ip_address,
-                        "error": str(e)
+                        "resolved_ip": ip_address
                     },
-                    "owasp_category": OwaspCategory.SECURITY_MISCONFIGURATION,
-                    "recommendation": "Investigate internal network exposure for this subdomain.",
-                    "affected_url": f"http://{subdomain}"
+                    "category": "recon",
+                    "remediation": "Investigate internal network exposure.",
+                    "affected_url": f"http://{subdomain}",
+                    "confidence": 80,
+                    "cvss": 0.0
                 }
 
-        except dns.resolver.NXDOMAIN:
+        except Exception:
             pass
-        except dns.resolver.LifetimeTimeout:
-            logger.warning(f"DNS query timed out for {subdomain}")
-        except Exception as e:
-            logger.error(f"Error checking subdomain {subdomain}", extra={"error": str(e)})
         return None
-
-    def _create_error_finding(self, description: str) -> Dict:
-        return { "type": "error", "severity": Severity.INFO, "title": "Subdomain DNS Enumeration Error", "description": description, "location": "Scanner", "cwe": "N/A", "remediation": "N/A", "confidence": 0, "cvss": 0 } 

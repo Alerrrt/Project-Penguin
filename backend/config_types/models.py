@@ -10,6 +10,7 @@ class Severity(str, Enum):
     MEDIUM = "Medium"
     LOW = "Low"
     INFO = "Info"
+    RECON = "Recon"
 
 class OwaspCategory(str, Enum):
     """OWASP Top 10 2021 categories."""
@@ -94,7 +95,7 @@ class Finding(BaseModel):
     title: str
     description: str
     location: str
-    evidence: Optional[str] = None
+    evidence: Optional[Any] = None
     timestamp: datetime = Field(default_factory=datetime.now)
 
 class ScanResult(BaseModel):
