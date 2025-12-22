@@ -1,4 +1,4 @@
-﻿class ScanTimeoutError(Exception):
+class ScanTimeoutError(Exception):
     """Raised when a scan exceeds the maximum allowed time."""
     pass
  

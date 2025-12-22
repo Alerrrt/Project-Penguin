@@ -1,4 +1,4 @@
-﻿from typing import Dict, Optional
+from typing import Dict, Optional
 from datetime import datetime, timedelta
 from collections import defaultdict
 import logging

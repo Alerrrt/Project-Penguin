@@ -1,4 +1,4 @@
-﻿from fastapi import APIRouter
+from fastapi import APIRouter
 from .scans import router as scans_router
 from .websocket import router as websocket_router
 from .reports import router as reports_router

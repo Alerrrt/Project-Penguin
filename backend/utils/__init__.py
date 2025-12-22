@@ -1,4 +1,4 @@
-﻿# Import the enhanced HTTP client functionality
+# Import the enhanced HTTP client functionality
 from .http_client import get_http_client, get_shared_http_client, SharedHTTPClient
 
 # Legacy imports for backward compatibility

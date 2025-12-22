@@ -1,4 +1,4 @@
-﻿import psutil
+import psutil
 import logging
 import asyncio
 import time

@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🌌 Project-Echo
+#  Project-Echo
 
 **The Next Generation of Open-Source Security Scanning**
 
@@ -18,18 +18,18 @@ Equipped with a concurrent scanning engine and a sleek, real-time dashboard, it 
 
 </div>
 
-## ✨ Key Features
+##  Key Features
 
-- ⚡ **High-Performance Cores**: Asynchronous scanning engine built with FastAPI and HTTPX for extreme concurrency.
-- 🎨 **Sleek UI/UX**: Modern React dashboard featuring real-time updates and modular control grids.
-- 🔍 **Deep Scanning Architecture**: 
+-  **High-Performance Cores**: Asynchronous scanning engine built with FastAPI and HTTPX for extreme concurrency.
+-  **Sleek UI/UX**: Modern React dashboard featuring real-time updates and modular control grids.
+-  **Deep Scanning Architecture**: 
   - **Injection Attacks**: XSS, SQLi, XXE, and more.
   - **Access Control**: Broken authentication and authorization testers.
   - **OSINT**: Subdomain enumeration, CVE lookups, and WHOIS discovery.
-- 📈 **Real-time Metrics**: Built-in monitoring for HTTP client performance and scanner state.
-- 🛡️ **Safe by Design**: Integrated SSRF protection and rate-limiting to ensure responsible scanning.
+-  **Real-time Metrics**: Built-in monitoring for HTTP client performance and scanner state.
+-  **Safe by Design**: Integrated SSRF protection and rate-limiting to ensure responsible scanning.
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### Prerequisites
 
@@ -37,7 +37,7 @@ Equipped with a concurrent scanning engine and a sleek, real-time dashboard, it 
 - Node.js 18+
 - Docker (Optional for containerized deployment)
 
-### 🛠️ Manual Installation
+###  Manual Installation
 
 1. **Clone the Abyss**
    ```bash
@@ -59,25 +59,25 @@ Equipped with a concurrent scanning engine and a sleek, real-time dashboard, it 
    npm run dev
    ```
 
-## 📁 Project Structure
+##  Project Structure
 
 ```bash
-📦 Project-Echo
- ┣ 📂 backend          # FastAPI Application & Scanning Engine
- ┃ ┣ 📂 api            # Endpoints & Routers
- ┃ ┣ 📂 scanners       # Security module implementations
- ┃ ┗ 📂 utils          # Concurrency, Throttling & HTTP Helpers
- ┣ 📂 frontend         # Vite + React Dashboard
- ┣ 📜 docker-compose.yml 
- ┗ 📜 .gitignore
+ Project-Echo
+   backend          # FastAPI Application & Scanning Engine
+    api            # Endpoints & Routers
+    scanners       # Security module implementations
+    utils          # Concurrency, Throttling & HTTP Helpers
+   frontend         # Vite + React Dashboard
+   docker-compose.yml 
+   .gitignore
 ```
 
-## 📜 License
+##  License
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
 ---
 
 <div align="center">
-  <sub>Built with ❤️ by the Project-Echo Team</sub>
+  <sub>Built with  by the Project-Echo Team</sub>
 </div>

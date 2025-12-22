@@ -70,9 +70,9 @@ try:
         allow_methods=["*"],
         allow_headers=["*"],
     )
-    logger.info("✅ CORS middleware configured successfully")
+    logger.info(" CORS middleware configured successfully")
 except Exception as e:
-    logger.error(f"❌ Failed to configure CORS middleware: {e}")
+    logger.error(f" Failed to configure CORS middleware: {e}")
 
 # Deferred initialization - will be set up during startup
 app.state.scanner_registry = None
@@ -122,37 +122,37 @@ def lazy_import_components():
     global scanner_registry, scanner_engine, plugin_manager
     
     try:
-        logger.info("🔄 Starting lazy import of components...")
+        logger.info(" Starting lazy import of components...")
         
         # Import AppConfig
         from backend.config import AppConfig
         app_config = AppConfig.load_from_env()
-        logger.info("✅ AppConfig loaded")
+        logger.info(" AppConfig loaded")
         
         # Import and initialize ScannerRegistry
         from backend.scanners.scanner_registry import ScannerRegistry
         scanner_registry = ScannerRegistry(app_config)
-        logger.info("✅ ScannerRegistry initialized")
+        logger.info(" ScannerRegistry initialized")
         
         # Import and initialize PluginManager
         from backend.plugins.plugin_manager import PluginManager
         plugin_manager = PluginManager()
-        logger.info("✅ PluginManager initialized")
+        logger.info(" PluginManager initialized")
         
         # Import and initialize ScannerEngine
         from backend.scanner_engine import ScannerEngine
         scanner_engine = ScannerEngine(plugin_manager)
-        logger.info("✅ ScannerEngine initialized")
+        logger.info(" ScannerEngine initialized")
         
         # Attach to app state
         app.state.scanner_registry = scanner_registry
         app.state.scanner_engine = scanner_engine
         
-        logger.info("🎉 All components lazy-imported successfully")
+        logger.info(" All components lazy-imported successfully")
         return True
         
     except Exception as e:
-        logger.error(f"❌ Lazy import failed: {e}", exc_info=True)
+        logger.error(f" Lazy import failed: {e}", exc_info=True)
         return False
 
 @app.on_event("startup")
@@ -160,23 +160,23 @@ async def startup_event():
     """Ultra-minimal startup - just set ready flag and defer everything else."""
     global backend_ready
     startup_start_time = datetime.now()
-    logger.info(f"🚀 Starting ultra-minimal initialization at {startup_start_time}")
+    logger.info(f" Starting ultra-minimal initialization at {startup_start_time}")
     
     try:
         # Set backend as ready immediately to allow API access
         backend_ready = True
-        logger.info("✅ Backend marked as ready immediately - components will load on first API call")
+        logger.info(" Backend marked as ready immediately - components will load on first API call")
         
         total_duration = (datetime.now() - startup_start_time).total_seconds()
-        logger.info(f"🎉 Ultra-minimal startup complete in {total_duration:.2f}s")
+        logger.info(f" Ultra-minimal startup complete in {total_duration:.2f}s")
 
     except Exception as e:
         total_duration = (datetime.now() - startup_start_time).total_seconds()
-        logger.error(f"❌ Startup failure after {total_duration:.2f}s: {e}", exc_info=True)
+        logger.error(f" Startup failure after {total_duration:.2f}s: {e}", exc_info=True)
         
         # Set backend ready to allow health checks and debugging
         backend_ready = True
-        logger.info("🔧 Backend marked as ready for debugging despite startup issues")
+        logger.info(" Backend marked as ready for debugging despite startup issues")
 
 @app.on_event("shutdown")
 async def shutdown_event():

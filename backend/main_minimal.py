@@ -74,8 +74,8 @@ async def get_scans():
 @app.on_event("startup")
 async def startup_event():
     """Minimal startup."""
-    logger.info("🚀 Minimal backend starting...")
-    logger.info("✅ Minimal backend ready!")
+    logger.info(" Minimal backend starting...")
+    logger.info(" Minimal backend ready!")
 
 @app.on_event("shutdown")
 async def shutdown_event():

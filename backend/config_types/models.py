@@ -1,4 +1,4 @@
-﻿from pydantic import BaseModel, HttpUrl, Field
+from pydantic import BaseModel, HttpUrl, Field
 from typing import Dict, List, Optional, Union, Any
 from enum import Enum
 from datetime import datetime

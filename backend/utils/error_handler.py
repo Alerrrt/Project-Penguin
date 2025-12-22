@@ -1,4 +1,4 @@
-﻿import logging
+import logging
 import traceback
 from typing import Optional, Dict, Any
 from datetime import datetime

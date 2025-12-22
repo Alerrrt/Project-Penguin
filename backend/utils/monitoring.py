@@ -1,4 +1,4 @@
-﻿import logging
+import logging
 import psutil
 import asyncio
 from typing import Dict, List, Optional

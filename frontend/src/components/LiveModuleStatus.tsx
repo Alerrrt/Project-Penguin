@@ -21,7 +21,7 @@ const parseLogMessage = (message: string): { icon: string; color: string; conten
     return { icon: '[+]', color: 'text-yellow-300', content: `New Finding: ${details}` };
   }
   if (lowerMessage.includes('=> completed')) {
-    return { icon: '[✓]', color: 'text-green-400', content: message };
+    return { icon: '[]', color: 'text-green-400', content: message };
   }
   if (lowerMessage.includes('=> running') || lowerMessage.includes('executing scanner')) {
     return { icon: '[»]', color: 'text-blue-400', content: message };
