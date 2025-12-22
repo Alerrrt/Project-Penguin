@@ -23,7 +23,7 @@ class InsecureDeserializationScanner(BaseScanner):
         "name": "Insecure Deserialization",
         "description": "Detects insecure deserialization vulnerabilities by sending crafted payloads in various formats.",
         "owasp_category": "A08:2021 - Software and Data Integrity Failures",
-        "author": "Project Nightingale Team",
+        "author": "Project Echo Team",
         "version": "1.0"
     }
 

@@ -19,7 +19,7 @@ class AuthenticationBruteForceCredentialStuffingScanner(BaseScanner):
         "name": "Authentication Brute Force and Credential Stuffing",
         "description": "Detects vulnerabilities to brute force and credential stuffing attacks by testing authentication mechanisms.",
         "owasp_category": "A02:2021 - Cryptographic Failures",
-        "author": "Project Nightingale Team",
+        "author": "Project Echo Team",
         "version": "1.0"
     }
 

@@ -22,7 +22,7 @@ class XxeScanner(BaseScanner):
         "name": "XML External Entity (XXE)",
         "description": "Detects XXE vulnerabilities by sending crafted XML payloads.",
         "owasp_category": "A03:2021 - Injection",
-        "author": "Project Nightingale Team",
+        "author": "Project Echo Team",
         "version": "1.0"
     }
 

@@ -23,7 +23,7 @@ class DirectoryFileEnumerationScanner(BaseScanner):
         "name": "Directory and File Enumeration",
         "description": "Detects exposed directories and files through enumeration.",
         "owasp_category": "A05:2021 - Security Misconfiguration",
-        "author": "Project Nightingale Team",
+        "author": "Project Echo Team",
         "version": "1.0"
     }
 

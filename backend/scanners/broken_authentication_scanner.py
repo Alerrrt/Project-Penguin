@@ -22,7 +22,7 @@ class BrokenAuthenticationScanner(BaseScanner):
         "name": "Broken Authentication",
         "description": "Detects missing authentication and weak credentials on common authentication endpoints.",
         "owasp_category": "A07:2021 - Identification and Authentication Failures",
-        "author": "Project Nightingale Team",
+        "author": "Project Echo Team",
         "version": "1.0"
     }
 

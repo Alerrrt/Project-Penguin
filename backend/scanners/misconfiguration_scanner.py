@@ -21,7 +21,7 @@ class MisconfigurationScanner(BaseScanner):
         "name": "Security Misconfiguration Scanner",
         "description": "Detects common security misconfigurations in web applications.",
         "owasp_category": "A05:2021 - Security Misconfiguration",
-        "author": "Project Nightingale Team",
+        "author": "Project Echo Team",
         "version": "1.0"
     }
 

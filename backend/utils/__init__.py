@@ -7,7 +7,7 @@ from contextlib import asynccontextmanager
 from typing import AsyncIterator, Optional, Dict
 
 _DEFAULT_HEADERS = {
-    "User-Agent": "NightingaleScanner/2.0 (+https://project-nightingale.dev)"
+    "User-Agent": "ProjectEchoScanner/2.0 (+https://github.com/Alerrrt/Project-Echo)"
 }
 
 # Keep the old function for backward compatibility, but it now uses the enhanced client

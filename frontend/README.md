@@ -1,6 +1,6 @@
-# Project Nightingale Frontend
+# Project Echo Frontend
 
-A modern, high-performance React + TypeScript dashboard for Project Nightingale, featuring real-time scan controls, modular UI, API integration, and advanced vulnerability reporting.
+A modern, high-performance React + TypeScript dashboard for Project Echo, featuring real-time scan controls, modular UI, API integration, and advanced vulnerability reporting.
 
 ## Project Structure
 
@@ -61,4 +61,4 @@ A modern, high-performance React + TypeScript dashboard for Project Nightingale,
 
 ---
 
-For questions or support, please contact the Project Nightingale maintainers.
+For questions or support, please contact the Project Echo maintainers.

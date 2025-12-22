@@ -22,7 +22,7 @@ class InsecureDesignScanner(BaseScanner):
         "name": "Insecure Design",
         "description": "Detects insecure design patterns such as missing security headers, weak password policies, and lack of rate limiting.",
         "owasp_category": "A04:2021 - Insecure Design",
-        "author": "Project Nightingale Team",
+        "author": "Project Echo Team",
         "version": "1.0"
     }
 

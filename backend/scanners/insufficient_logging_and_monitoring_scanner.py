@@ -22,7 +22,7 @@ class InsufficientLoggingAndMonitoringScanner(BaseScanner):
         "name": "Insufficient Logging and Monitoring",
         "description": "Detects missing security headers and improper error handling that may indicate insufficient logging and monitoring.",
         "owasp_category": "A09:2021 - Security Logging and Monitoring Failures",
-        "author": "Project Nightingale Team",
+        "author": "Project Echo Team",
         "version": "1.0"
     }
 

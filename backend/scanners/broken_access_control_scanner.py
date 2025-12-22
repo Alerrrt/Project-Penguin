@@ -18,7 +18,7 @@ class BrokenAccessControlScanner(BaseScanner):
         "name": "Broken Access Control",
         "description": "Detects broken access control vulnerabilities by testing various access control mechanisms.",
         "owasp_category": "A01:2021 - Broken Access Control",
-        "author": "Project Nightingale Team",
+        "author": "Project Echo Team",
         "version": "1.0"
     }
 

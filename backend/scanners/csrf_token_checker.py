@@ -23,7 +23,7 @@ class CsrfTokenCheckerScanner(BaseScanner):
         "name": "CSRF Token Checker",
         "description": "Checks for the presence of anti-CSRF tokens in HTML forms.",
         "owasp_category": "A04:2021 - Insecure Design",
-        "author": "Project Nightingale Team",
+        "author": "Project Echo Team",
         "version": "1.0"
     }
 

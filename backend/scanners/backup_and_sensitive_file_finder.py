@@ -25,7 +25,7 @@ class BackupAndSensitiveFileFinderScanner(BaseScanner):
         "name": "Backup & Sensitive File Finder",
         "description": "Finds exposed backup and sensitive configuration files by probing common file paths.",
         "owasp_category": "A05:2021 - Security Misconfiguration",
-        "author": "Project Nightingale Team",
+        "author": "Project Echo Team",
         "version": "1.0"
     }
 

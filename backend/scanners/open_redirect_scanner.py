@@ -23,7 +23,7 @@ class OpenRedirectScanner(BaseScanner):
         "name": "Open Redirect",
         "description": "Detects open redirect vulnerabilities by injecting common payloads into redirect parameters and analyzing responses.",
         "owasp_category": "A10:2021 - Server-Side Request Forgery (SSRF)",
-        "author": "Project Nightingale Team",
+        "author": "Project Echo Team",
         "version": "1.0"
     }
 

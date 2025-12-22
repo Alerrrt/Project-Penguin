@@ -19,7 +19,7 @@ class AuthenticationBypassScanner(BaseScanner):
         "name": "Authentication Bypass",
         "description": "Detects authentication bypass vulnerabilities by testing various bypass techniques.",
         "owasp_category": "A02:2021 - Cryptographic Failures",
-        "author": "Project Nightingale Team",
+        "author": "Project Echo Team",
         "version": "1.0"
     }
 

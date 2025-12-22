@@ -23,7 +23,7 @@ class ApiFuzzingScanner(BaseScanner):
         "name": "API Fuzzing Scanner",
         "description": "Detects vulnerabilities in API endpoints by fuzzing with various payloads.",
         "owasp_category": "A09:2021 - Security Logging and Monitoring Failures",
-        "author": "Project Nightingale Team",
+        "author": "Project Echo Team",
         "version": "1.0"
     }
 

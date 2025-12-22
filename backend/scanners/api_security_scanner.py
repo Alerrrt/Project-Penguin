@@ -18,7 +18,7 @@ class ApiSecurityScanner(BaseScanner):
         "name": "API Security",
         "description": "Detects API security vulnerabilities including improper API versioning, missing rate limiting, and insecure API endpoints.",
         "owasp_category": "A01:2021 - Broken Access Control",
-        "author": "Project Nightingale Team",
+        "author": "Project Echo Team",
         "version": "1.0"
     }
 

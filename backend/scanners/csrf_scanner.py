@@ -15,7 +15,7 @@ class CSRFScanner(BaseScanner):
         "name": "Cross-Site Request Forgery (CSRF)",
         "description": "Detects CSRF vulnerabilities by analyzing forms and endpoints for missing CSRF protections.",
         "owasp_category": "A01:2021 - Broken Access Control",
-        "author": "Project Nightingale Team",
+        "author": "Project Echo Team",
         "version": "1.0"
     }
 

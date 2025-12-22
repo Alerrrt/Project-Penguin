@@ -23,7 +23,7 @@ class UsingComponentsWithKnownVulnerabilitiesScanner(BaseScanner):
         "name": "Using Components with Known Vulnerabilities",
         "description": "Detects the use of components with known vulnerabilities by checking version information and known vulnerability databases.",
         "owasp_category": "A06:2021 - Vulnerable and Outdated Components",
-        "author": "Project Nightingale Team",
+        "author": "Project Echo Team",
         "version": "1.0"
     }
 

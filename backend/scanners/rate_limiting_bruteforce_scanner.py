@@ -20,7 +20,7 @@ class RateLimitingBruteforceScanner(BaseScanner):
         "name": "Rate Limiting & Bruteforce Scanner",
         "description": "Detects missing rate limiting and bruteforce protection mechanisms.",
         "owasp_category": "A07:2021 - Identification and Authentication Failures",
-        "author": "Project Nightingale Team",
+        "author": "Project Echo Team",
         "version": "1.0"
     }
 

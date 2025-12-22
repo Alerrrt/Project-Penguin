@@ -26,7 +26,7 @@ class RobotsTxtSitemapCrawlScanner(BaseScanner):
         "name": "Robots.txt and Sitemap Scanner",
         "description": "Analyzes robots.txt and sitemap files for sensitive information and misconfigurations.",
         "owasp_category": "A01:2021 - Broken Access Control",
-        "author": "Project Nightingale Team",
+        "author": "Project Echo Team",
         "version": "1.0"
     }
 

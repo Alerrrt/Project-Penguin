@@ -23,7 +23,7 @@ class OpenRedirectFinderScanner(BaseScanner):
         "name": "Open Redirect Scanner",
         "description": "Detects open redirect vulnerabilities by testing various redirect parameters and payloads.",
         "owasp_category": "A01:2021 - Broken Access Control",
-        "author": "Project Nightingale Team",
+        "author": "Project Echo Team",
         "version": "1.0"
     }
 

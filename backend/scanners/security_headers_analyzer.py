@@ -21,7 +21,7 @@ class SecurityHeadersAnalyzer(BaseScanner):
         "name": "Security Headers Analyzer",
         "description": "Analyzes security headers in HTTP responses to identify missing or misconfigured headers.",
         "owasp_category": "A05:2021 - Security Misconfiguration",
-        "author": "Project Nightingale Team",
+        "author": "Project Echo Team",
         "version": "1.0"
     }
 

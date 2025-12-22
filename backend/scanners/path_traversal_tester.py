@@ -23,7 +23,7 @@ class PathTraversalTesterScanner(BaseScanner):
         "name": "Path Traversal Scanner",
         "description": "Detects path traversal vulnerabilities by testing various payloads and parameters.",
         "owasp_category": "A01:2021 - Broken Access Control",
-        "author": "Project Nightingale Team",
+        "author": "Project Echo Team",
         "version": "1.0"
     }
 

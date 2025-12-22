@@ -22,7 +22,7 @@ class SecurityMisconfigurationScanner(BaseScanner):
         "name": "Security Misconfiguration",
         "description": "Detects common security misconfigurations such as exposed files and missing security headers.",
         "owasp_category": "A05:2021 - Security Misconfiguration",
-        "author": "Project Nightingale Team",
+        "author": "Project Echo Team",
         "version": "1.0"
     }
 

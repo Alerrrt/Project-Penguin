@@ -23,7 +23,7 @@ class HostHeaderVirtualHostPoisoningScanner(BaseScanner):
         "name": "Host Header Virtual Host Poisoning",
         "description": "Detects host header injection and virtual host poisoning vulnerabilities.",
         "owasp_category": "A01:2021 - Broken Access Control",
-        "author": "Project Nightingale Team",
+        "author": "Project Echo Team",
         "version": "1.0"
     }
 

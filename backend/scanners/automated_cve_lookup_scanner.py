@@ -18,7 +18,7 @@ class AutomatedCVELookupScanner(BaseScanner):
         "name": "Automated CVE Lookup Scanner",
         "description": "Performs automated CVE lookups based on identified software versions.",
         "owasp_category": "A06:2021 - Vulnerable and Outdated Components",
-        "author": "Project Nightingale Team",
+        "author": "Project Echo Team",
         "version": "1.0"
     }
 

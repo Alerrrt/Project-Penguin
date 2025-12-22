@@ -20,7 +20,7 @@ class ClickjackingScreenshotterScanner(BaseScanner):
         "name": "Clickjacking Screenshotter",
         "description": "Detects Clickjacking vulnerabilities by checking X-Frame-Options and CSP headers.",
         "owasp_category": "A05:2021 - Security Misconfiguration",
-        "author": "Project Nightingale Team",
+        "author": "Project Echo Team",
         "version": "1.0"
     }
 

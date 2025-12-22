@@ -54,7 +54,7 @@ class TechnologyFingerprintScanner(BaseScanner):
         "name": "Technology Fingerprint Scanner",
         "description": "Identifies technologies and versions used by the target webapp and checks for known vulnerabilities using the OSV.dev database.",
         "owasp_category": OwaspCategory.A06_VULNERABLE_AND_OUTDATED_COMPONENTS,
-        "author": "Project Nightingale Team",
+        "author": "Project Echo Team",
         "version": "1.1"
     }
 

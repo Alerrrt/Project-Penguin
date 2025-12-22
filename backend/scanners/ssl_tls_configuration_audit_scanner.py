@@ -23,7 +23,7 @@ class SSLTLSConfigurationAuditScanner(BaseScanner):
         "name": "SSL/TLS Configuration Audit",
         "description": "Audits SSL/TLS configurations for common issues.",
         "owasp_category": "A02:2021 - Cryptographic Failures",
-        "author": "Project Nightingale Team",
+        "author": "Project Echo Team",
         "version": "1.0"
     }
 

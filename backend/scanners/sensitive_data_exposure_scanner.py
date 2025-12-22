@@ -24,7 +24,7 @@ class SensitiveDataExposureScanner(BaseScanner):
         "name": "Sensitive Data Exposure",
         "description": "Detects exposure of sensitive data such as emails, API keys, and credentials in responses and headers.",
         "owasp_category": "A04:2021 - Insecure Design",
-        "author": "Project Nightingale Team",
+        "author": "Project Echo Team",
         "version": "1.0"
     }
 

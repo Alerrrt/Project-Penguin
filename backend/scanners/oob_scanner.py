@@ -22,7 +22,7 @@ class OobScanner(BaseScanner):
         "name": "Out-of-Band Vulnerability Scanner",
         "description": "Detects potential out-of-band vulnerabilities by monitoring for external interactions.",
         "owasp_category": "A08:2021 - Software and Data Integrity Failures",
-        "author": "Project Nightingale Team",
+        "author": "Project Echo Team",
         "version": "1.0"
     }
 

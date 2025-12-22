@@ -24,7 +24,7 @@ class XssScanner(BaseScanner):
         "name": "XSS Scanner",
         "description": "Detects Cross-Site Scripting (XSS) vulnerabilities.",
         "owasp_category": OwaspCategory.A03_XSS,
-        "author": "Project Nightingale Team",
+        "author": "Project Echo Team",
         "version": "1.0"
     }
 

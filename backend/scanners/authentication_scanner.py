@@ -19,7 +19,7 @@ class AuthenticationScanner(BaseScanner):
         "name": "Authentication",
         "description": "Detects authentication vulnerabilities by analyzing login mechanisms and session management.",
         "owasp_category": "A02:2021 - Cryptographic Failures",
-        "author": "Project Nightingale Team",
+        "author": "Project Echo Team",
         "version": "2.0"
     }
 

@@ -14,7 +14,7 @@ class CorsMisconfigurationScanner(BaseScanner):
         "name": "CORS Misconfiguration Scanner",
         "description": "Detects common CORS misconfigurations like wildcard origins with credentials and reflective origins.",
         "owasp_category": "Security Misconfiguration",
-        "author": "Project Nightingale",
+        "author": "Project Echo",
         "version": "1.0.0",
     }
 
